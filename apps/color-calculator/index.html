@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Color Calculator - Knitnox</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #e6e9ef;
+      --light: #ffffff;
+      --dark: #c2c8d0;
+      --text: #2a2f3a;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .calculator {
+      max-width: 420px;
+      width: 100%;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .header h1 {
+      font-size: 1.8rem;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 900;
+      letter-spacing: 2px;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .header p {
+      font-size: 0.85rem;
+      color: #888;
+    }
+
+    .calc-body {
+      padding: 24px;
+      border-radius: 20px;
+      background: var(--bg);
+      box-shadow: 10px 10px 20px var(--dark),
+                  -10px -10px 20px var(--light);
+    }
+
+    .color-preview {
+      margin-bottom: 24px;
+      padding: 60px 20px;
+      border-radius: 16px;
+      background: var(--bg);
+      box-shadow: inset 6px 6px 12px var(--dark),
+                  inset -6px -6px 12px var(--light);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .color-display {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      border-radius: 16px;
+      transition: background-color 0.3s ease;
+    }
+
+    .color-text {
+      position: relative;
+      z-index: 1;
+      font-size: 1.2rem;
+      font-weight: 600;
+      text-shadow: 0 0 5px rgba(255,255,255,0.8),
+                   0 0 10px rgba(255,255,255,0.5);
+    }
+
+    .input-group {
+      margin-bottom: 18px;
+    }
+
+    .input-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 12px;
+      background: var(--bg);
+      box-shadow: inset 4px 4px 8px var(--dark),
+                  inset -4px -4px 8px var(--light);
+      border: none;
+      font-size: 1rem;
+      color: var(--text);
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      outline: none;
+      transition: 0.2s ease;
+    }
+
+    .input-field:focus {
+      box-shadow: inset 6px 6px 10px var(--dark),
+                  inset -6px -6px 10px var(--light);
+    }
+
+    .rgb-inputs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .rgb-inputs input {
+      text-align: center;
+    }
+
+    .hsl-inputs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .hsl-inputs input {
+      text-align: center;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 0.8rem;
+      color: #888;
+    }
+
+    .footer a {
+      color: #5a8dee;
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+
+    .copy-btn {
+      margin-top: 12px;
+      padding: 12px 24px;
+      border-radius: 12px;
+      background: var(--bg);
+      box-shadow: 6px 6px 12px var(--dark),
+                  -6px -6px 12px var(--light);
+      border: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text);
+      cursor: pointer;
+      transition: 0.15s ease;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      width: 100%;
+    }
+
+    .copy-btn:active {
+      box-shadow: inset 4px 4px 8px var(--dark),
+                  inset -4px -4px 8px var(--light);
+    }
+
+    .small-label {
+      font-size: 0.7rem;
+      color: #999;
+      text-transform: none;
+      letter-spacing: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator">
+    <div class="header">
+      <h1>Color Calculator</h1>
+      <p>HEX • RGB • HSL Converter</p>
+    </div>
+
+    <div class="calc-body">
+      <div class="color-preview">
+        <div class="color-display" id="color-display"></div>
+        <div class="color-text" id="color-name">Pick a color</div>
+      </div>
+
+      <div class="input-group">
+        <label for="hex-input">HEX Color Code</label>
+        <input type="text" id="hex-input" class="input-field" placeholder="#000000" maxlength="7">
+      </div>
+
+      <div class="input-group">
+        <label>RGB <span class="small-label">(0-255)</span></label>
+        <div class="rgb-inputs">
+          <input type="number" id="r-input" class="input-field" placeholder="R" min="0" max="255">
+          <input type="number" id="g-input" class="input-field" placeholder="G" min="0" max="255">
+          <input type="number" id="b-input" class="input-field" placeholder="B" min="0" max="255">
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label>HSL <span class="small-label">(H: 0-360, S/L: 0-100)</span></label>
+        <div class="hsl-inputs">
+          <input type="number" id="h-input" class="input-field" placeholder="H" min="0" max="360">
+          <input type="number" id="s-input" class="input-field" placeholder="S" min="0" max="100">
+          <input type="number" id="l-input" class="input-field" placeholder="L" min="0" max="100">
+        </div>
+      </div>
+
+      <button class="copy-btn" id="copy-hex">Copy HEX</button>
+    </div>
+
+    <div class="footer">
+      <a href="../../index.html#apps">← Back to Apps</a>
+    </div>
+  </div>
+
+  <script>
+    const hexInput = document.getElementById('hex-input');
+    const rInput = document.getElementById('r-input');
+    const gInput = document.getElementById('g-input');
+    const bInput = document.getElementById('b-input');
+    const hInput = document.getElementById('h-input');
+    const sInput = document.getElementById('s-input');
+    const lInput = document.getElementById('l-input');
+    const colorDisplay = document.getElementById('color-display');
+    const colorName = document.getElementById('color-name');
+    const copyBtn = document.getElementById('copy-hex');
+
+    let isUpdating = false;
+
+    // HEX to RGB
+    function hexToRgb(hex) {
+      const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+      return result ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+      } : null;
+    }
+
+    // RGB to HEX
+    function rgbToHex(r, g, b) {
+      return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+    }
+
+    // RGB to HSL
+    function rgbToHsl(r, g, b) {
+      r /= 255;
+      g /= 255;
+      b /= 255;
+      const max = Math.max(r, g, b), min = Math.min(r, g, b);
+      let h, s, l = (max + min) / 2;
+
+      if (max === min) {
+        h = s = 0;
+      } else {
+        const d = max - min;
+        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+        switch (max) {
+          case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break;
+          case g: h = ((b - r) / d + 2) / 6; break;
+          case b: h = ((r - g) / d + 4) / 6; break;
+        }
+      }
+
+      return {
+        h: Math.round(h * 360),
+        s: Math.round(s * 100),
+        l: Math.round(l * 100)
+      };
+    }
+
+    // HSL to RGB
+    function hslToRgb(h, s, l) {
+      h /= 360;
+      s /= 100;
+      l /= 100;
+      let r, g, b;
+
+      if (s === 0) {
+        r = g = b = l;
+      } else {
+        const hue2rgb = (p, q, t) => {
+          if (t < 0) t += 1;
+          if (t > 1) t -= 1;
+          if (t < 1/6) return p + (q - p) * 6 * t;
+          if (t < 1/2) return q;
+          if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+          return p;
+        };
+        const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+        const p = 2 * l - q;
+        r = hue2rgb(p, q, h + 1/3);
+        g = hue2rgb(p, q, h);
+        b = hue2rgb(p, q, h - 1/3);
+      }
+
+      return {
+        r: Math.round(r * 255),
+        g: Math.round(g * 255),
+        b: Math.round(b * 255)
+      };
+    }
+
+    // Update color display
+    function updateDisplay(hex) {
+      colorDisplay.style.backgroundColor = hex;
+      colorName.textContent = hex.toUpperCase();
+      
+      // Determine text color based on brightness
+      const rgb = hexToRgb(hex);
+      const brightness = (rgb.r * 299 + rgb.g * 587 + rgb.b * 114) / 1000;
+      colorName.style.color = brightness > 128 ? '#2a2f3a' : '#ffffff';
+      colorName.style.textShadow = brightness > 128 
+        ? '0 0 5px rgba(255,255,255,0.8), 0 0 10px rgba(255,255,255,0.5)'
+        : '0 0 5px rgba(0,0,0,0.8), 0 0 10px rgba(0,0,0,0.5)';
+    }
+
+    // HEX input change
+    hexInput.addEventListener('input', (e) => {
+      if (isUpdating) return;
+      isUpdating = true;
+
+      let hex = e.target.value;
+      if (!hex.startsWith('#')) hex = '#' + hex;
+      
+      const rgb = hexToRgb(hex);
+      if (rgb) {
+        rInput.value = rgb.r;
+        gInput.value = rgb.g;
+        bInput.value = rgb.b;
+        
+        const hsl = rgbToHsl(rgb.r, rgb.g, rgb.b);
+        hInput.value = hsl.h;
+        sInput.value = hsl.s;
+        lInput.value = hsl.l;
+        
+        updateDisplay(hex);
+      }
+      
+      isUpdating = false;
+    });
+
+    // RGB inputs change
+    function updateFromRgb() {
+      if (isUpdating) return;
+      isUpdating = true;
+
+      const r = parseInt(rInput.value) || 0;
+      const g = parseInt(gInput.value) || 0;
+      const b = parseInt(bInput.value) || 0;
+
+      const hex = rgbToHex(r, g, b);
+      hexInput.value = hex;
+
+      const hsl = rgbToHsl(r, g, b);
+      hInput.value = hsl.h;
+      sInput.value = hsl.s;
+      lInput.value = hsl.l;
+
+      updateDisplay(hex);
+      isUpdating = false;
+    }
+
+    rInput.addEventListener('input', updateFromRgb);
+    gInput.addEventListener('input', updateFromRgb);
+    bInput.addEventListener('input', updateFromRgb);
+
+    // HSL inputs change
+    function updateFromHsl() {
+      if (isUpdating) return;
+      isUpdating = true;
+
+      const h = parseInt(hInput.value) || 0;
+      const s = parseInt(sInput.value) || 0;
+      const l = parseInt(lInput.value) || 0;
+
+      const rgb = hslToRgb(h, s, l);
+      rInput.value = rgb.r;
+      gInput.value = rgb.g;
+      bInput.value = rgb.b;
+
+      const hex = rgbToHex(rgb.r, rgb.g, rgb.b);
+      hexInput.value = hex;
+
+      updateDisplay(hex);
+      isUpdating = false;
+    }
+
+    hInput.addEventListener('input', updateFromHsl);
+    sInput.addEventListener('input', updateFromHsl);
+    lInput.addEventListener('input', updateFromHsl);
+
+    // Copy HEX to clipboard
+    copyBtn.addEventListener('click', () => {
+      const hex = hexInput.value;
+      navigator.clipboard.writeText(hex).then(() => {
+        const originalText = copyBtn.textContent;
+        copyBtn.textContent = 'Copied!';
+        setTimeout(() => {
+          copyBtn.textContent = originalText;
+        }, 1500);
+      });
+    });
+
+    // Initialize with a default color
+    hexInput.value = '#5a8dee';
+    hexInput.dispatchEvent(new Event('input'));
+
+    // Register service worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js')
+          .then(reg => console.log('Service Worker registered'))
+          .catch(err => console.log('Service Worker registration failed:', err));
+      });
+    }
+  </script>
+</body>
+</html>

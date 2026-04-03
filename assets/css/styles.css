@@ -1,0 +1,417 @@
+/**
+ * Knitnox App Store - Main Styles
+ * Version: 1.0.0
+ * 
+ * This file contains all styles specific to the Knitnox app store.
+ * For reusable neumorphic components, see: assets/css/neumorphic.css
+ */
+
+/* CSS Variables */
+:root {
+  --bg: #e6e9ef;
+  --light: #ffffff;
+  --dark: #c2c8d0;
+  --text: #2a2f3a;
+}
+
+/* Base Styles */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  justify-content: center;
+}
+
+.container {
+  max-width: 420px;
+  padding: 20px;
+  width: 100%;
+}
+
+@media (min-width: 1024px) {
+  .container {
+    width: 50vw;
+    max-width: none;
+  }
+}
+
+/* Logo Card with Animated Glow */
+.logo-card {
+  padding: 14px 18px;
+  border-radius: 16px;
+  background: var(--bg);
+  box-shadow: 6px 6px 12px var(--dark),
+              -6px -6px 12px var(--light);
+  text-align: center;
+  position: relative;
+  animation: cardGlowRandom 60s infinite ease-in-out;
+}
+
+@keyframes cardGlowRandom {
+  0% {
+    box-shadow: 6px 6px 12px var(--dark),
+                -6px -6px 12px var(--light),
+                0 0 12.5px rgba(255,0,150,0.35);
+  }
+  20% {
+    box-shadow: 6px 6px 12px var(--dark),
+                -6px -6px 12px var(--light),
+                0 0 15px rgba(0,255,200,0.4);
+  }
+  40% {
+    box-shadow: 6px 6px 12px var(--dark),
+                -6px -6px 12px var(--light),
+                0 0 14px rgba(100,150,255,0.35);
+  }
+  60% {
+    box-shadow: 6px 6px 12px var(--dark),
+                -6px -6px 12px var(--light),
+                0 0 16px rgba(255,200,0,0.4);
+  }
+  80% {
+    box-shadow: 6px 6px 12px var(--dark),
+                -6px -6px 12px var(--light),
+                0 0 13px rgba(150,0,255,0.35);
+  }
+  100% {
+    box-shadow: 6px 6px 12px var(--dark),
+                -6px -6px 12px var(--light),
+                0 0 12.5px rgba(255,0,150,0.35);
+  }
+}
+
+/* Typography */
+h1 {
+  margin: 0;
+  font-size: 2.6rem;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  letter-spacing: 4px;
+  color: var(--text);
+}
+
+h1 span {
+  display: inline-block;
+}
+
+h1 span:nth-child(6) {
+  animation: bulbGlow 2s ease-in-out infinite;
+  color: #ffa500;
+}
+
+@keyframes bulbGlow {
+  0%, 100% { 
+    text-shadow: 0 0 10px rgba(255, 200, 0, 0.4),
+                 0 0 20px rgba(255, 165, 0, 0.5),
+                 0 0 30px rgba(255, 140, 0, 0.3);
+  }
+  50% { 
+    text-shadow: 0 0 20px rgba(255, 200, 0, 0.8),
+                 0 0 35px rgba(255, 165, 0, 0.9),
+                 0 0 50px rgba(255, 140, 0, 0.6),
+                 0 0 70px rgba(255, 120, 0, 0.4);
+  }
+}
+
+p {
+  text-align: left;
+  color: #666;
+  font-size: 0.95rem;
+}
+
+/* Cards */
+.card {
+  margin-top: 16px;
+  padding: 18px;
+  border-radius: 16px;
+  background: var(--bg);
+  box-shadow: 6px 6px 12px var(--dark),
+              -6px -6px 12px var(--light);
+  transition: 3.2s ease;
+}
+
+.card:active {
+  box-shadow: inset 4px 4px 8px var(--dark),
+              inset -4px -4px 8px var(--light);
+}
+
+.card h3 {
+  margin: 0 0 6px 0;
+  font-size: 1.1rem;
+}
+
+/* Buttons */
+.btn {
+  margin-top: 24px;
+  padding: 14px;
+  border-radius: 14px;
+  text-align: center;
+  background: var(--bg);
+  font-weight: bold;
+  text-decoration: none;
+  color: var(--text);
+  display: block;
+  box-shadow: 6px 6px 12px var(--dark),
+              -6px -6px 12px var(--light);
+  transition: 0.2s ease;
+}
+
+.btn:active {
+  box-shadow: inset 4px 4px 8px var(--dark),
+              inset -4px -4px 8px var(--light);
+}
+
+.btn-secondary {
+  padding: 14px;
+  border-radius: 14px;
+  text-align: center;
+  background: var(--bg);
+  font-weight: bold;
+  text-decoration: none;
+  color: var(--text);
+  display: block;
+  box-shadow: 6px 6px 12px var(--dark),
+              -6px -6px 12px var(--light);
+  transition: 0.2s ease;
+  border: none;
+  cursor: pointer;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  font-size: 1rem;
+}
+
+.btn-secondary:active {
+  box-shadow: inset 4px 4px 8px var(--dark),
+              inset -4px -4px 8px var(--light);
+}
+
+.back-btn {
+  margin-top: 16px;
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 12px;
+  background: var(--bg);
+  box-shadow: 6px 6px 12px var(--dark),
+              -6px -6px 12px var(--light);
+  text-decoration: none;
+  color: var(--text);
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: 0.2s ease;
+}
+
+.back-btn:active {
+  box-shadow: inset 4px 4px 8px var(--dark),
+              inset -4px -4px 8px var(--light);
+}
+
+/* Footer */
+.footer {
+  margin-top: 28px;
+  font-size: 0.8rem;
+  color: #888;
+  text-align: center;
+}
+
+.declaration {
+  margin-top: 12px;
+  font-size: 0.9rem;
+  color: #555;
+  text-align: center;
+}
+
+/* View Management for SPA */
+.view {
+  display: none;
+}
+
+.view.active {
+  display: block;
+}
+
+/* Search Box */
+.search-box {
+  margin-top: 16px;
+  padding: 14px 18px;
+  border-radius: 14px;
+  background: var(--bg);
+  box-shadow: inset 4px 4px 8px var(--dark),
+              inset -4px -4px 8px var(--light);
+  border: none;
+  width: calc(100% - 36px);
+  font-size: 0.95rem;
+  color: var(--text);
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  outline: none;
+}
+
+.search-box::placeholder {
+  color: #999;
+}
+
+/* Apps Grid */
+.apps-grid {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+@media (min-width: 1024px) {
+  .apps-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* App Cards */
+.app-card {
+  padding: 20px;
+  border-radius: 16px;
+  background: var(--bg);
+  box-shadow: 6px 6px 12px var(--dark),
+              -6px -6px 12px var(--light);
+  cursor: pointer;
+  transition: 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+}
+
+.app-card:active {
+  box-shadow: inset 4px 4px 8px var(--dark),
+              inset -4px -4px 8px var(--light);
+}
+
+.app-icon {
+  width: 70px;
+  height: 70px;
+  border-radius: 12px;
+  background: var(--bg);
+  box-shadow: 6px 6px 12px var(--dark),
+              -6px -6px 12px var(--light);
+  padding: 12px;
+  flex-shrink: 0;
+}
+
+.app-info h3 {
+  margin: 0 0 4px 0;
+  font-size: 1rem;
+}
+
+.app-info p {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #888;
+  line-height: 1.4;
+}
+
+/* Category Sections */
+.category-section {
+  margin-top: 28px;
+}
+
+.category-section:first-child {
+  margin-top: 20px;
+}
+
+.category-header {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 14px;
+  padding-left: 4px;
+  letter-spacing: 0.5px;
+}
+
+/* App Detail View */
+.detail-header {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-top: 16px;
+}
+
+.detail-icon {
+  width: 90px;
+  height: 90px;
+  border-radius: 16px;
+  background: var(--bg);
+  box-shadow: 6px 6px 12px var(--dark),
+              -6px -6px 12px var(--light);
+  padding: 18px;
+  flex-shrink: 0;
+}
+
+.detail-title h2 {
+  margin: 0 0 6px 0;
+  font-size: 1.6rem;
+}
+
+.detail-title p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #888;
+}
+
+.detail-description {
+  margin-top: 18px;
+  padding: 18px;
+  border-radius: 16px;
+  background: var(--bg);
+  box-shadow: 6px 6px 12px var(--dark),
+              -6px -6px 12px var(--light);
+}
+
+.detail-description p {
+  margin: 0;
+  line-height: 1.6;
+}
+
+.screenshots {
+  margin-top: 18px;
+}
+
+.screenshots img {
+  width: 20%;
+  border-radius: 14px;
+  box-shadow: 6px 6px 12px var(--dark),
+              -6px -6px 12px var(--light);
+  margin-top: 12px;
+}
+
+.action-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+/* No Apps Message */
+.no-apps {
+  text-align: center;
+  padding: 40px 20px;
+  color: #888;
+  font-size: 0.95rem;
+}
+
+/* Loading Indicator */
+.loading {
+  text-align: center;
+  padding: 20px;
+  color: #888;
+  font-size: 0.9rem;
+}
+
+.loading::after {
+  content: '...';
+  animation: loading-dots 1.5s infinite;
+}
+
+@keyframes loading-dots {
+  0%, 20% { content: '.'; }
+  40% { content: '..'; }
+  60%, 100% { content: '...'; }
+}
